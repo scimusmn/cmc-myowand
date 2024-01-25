@@ -10,11 +10,15 @@ const listeners = [];
 const parser = port.pipe(new ReadlineParser({ delimiter: '\n' }));
 parser.on('data', data => {
   const arr = data.split(' ');
-  const value = arr[arr.length-1];
+
+  const signal = arr[0];
+  const note = arr[arr.length-3];
+  const active = arr[arr.length-2];
   console.log(arr);
-  console.log(value);
   listeners.forEach(l => {
-    l.send(value);
+    l.send(JSON.stringify({
+      signal, active, note
+    }));
   });
 });
 
