@@ -1,6 +1,7 @@
 #include "signal_proc.h"
 
 #define SIGNAL_PIN A0
+#define TOUCH_PIN 2
 
 
 RollingMin<10> minimum;
@@ -36,6 +37,7 @@ double segment(double value, struct seg_t s) {
 
 
 void setup() {
+  pinMode(TOUCH_PIN, INPUT);
 	Serial.begin(115200);
 }
 
@@ -48,7 +50,7 @@ void loop() {
 	maximum.push(centered);
 	smoothMin.push(minimum.value());
 	smoothMax.push(maximum.value());
-	// Serial.print(centered); Serial.print(" ");
+	Serial.print(centered); Serial.print(" ");
 	// Serial.print((smoothMin.value())); Serial.print(" ");
 	// Serial.print((smoothMax.value())); Serial.print(" ");
 	Serial.print(s.levels); Serial.print(" 0 ");
@@ -65,5 +67,7 @@ void loop() {
   // music.push( segment(log(sqrt(smoothDiff.value()/2)), s) );
 	Serial.print((int) (s.levels * music.value())); Serial.print(" ");
 	// Serial.println(ldiff);
+  Serial.print(digitalRead(TOUCH_PIN)); Serial.print(" ");
   Serial.println();
+  delay(1);
 }
